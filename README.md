@@ -1,3 +1,3 @@
 # open_cv
 
- 只支持OpenCV 2.4.13.2, go调用 c++ api
+ go调用 opencv的接口,只在OpenCV 2.4.13.2测试过
