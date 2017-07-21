@@ -79,10 +79,15 @@ int Mat_rows(Mat* mat){
 int Mat_cols(Mat* mat){
 	return static_cast<cv::Mat*>(mat)->cols;
 }
-char * Mat_data(Mat* mat){
-	return (char* )static_cast<cv::Mat*>(mat)->data;
+uchar* Mat_data(Mat* mat){
+	return (uchar* )static_cast<cv::Mat*>(mat)->data;
 }
-
+size_t Mat_total(Mat* mat){
+	return static_cast<cv::Mat*>(mat)->total();
+}
+size_t Mat_elemSize(Mat* mat){
+	return static_cast<cv::Mat*>(mat)->elemSize();
+}
 
 //InputArray
 InputArray * MyInputArray(){

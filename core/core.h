@@ -73,7 +73,10 @@ int Mat_flags(Mat* mat);
 int Mat_dims(Mat* mat);
 int Mat_rows(Mat* mat);
 int Mat_cols(Mat* mat);
-char *Mat_data(Mat* mat);
+uchar* Mat_data(Mat* mat);
+size_t Mat_total(Mat* mat);
+size_t Mat_elemSize(Mat* mat);
+
 
 //InputArray
 InputArray * MyInputArray();

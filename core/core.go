@@ -289,8 +289,21 @@ func (m *Mat) Cols() int {
 	return int(C.Mat_cols(m.ptr))
 }
 
-func (m *Mat) Data() string {
-	return C.GoString(C.Mat_data(m.ptr))
+func (m *Mat) Data() []byte {
+	pointer := unsafe.Pointer(C.Mat_data(m.ptr))
+	size := m.Total() * m.ElemSize()
+	if pointer == nil {
+		return nil
+	}
+	return C.GoBytes(pointer, C.int(size))
+}
+
+func (m *Mat) Total() int {
+	return int(C.Mat_total(m.ptr))
+}
+
+func (m *Mat) ElemSize() int {
+	return int(C.Mat_elemSize(m.ptr))
 }
 
 func (m *Mat) Pointer() unsafe.Pointer {
