@@ -19,4 +19,12 @@ void calcHistWithSparseMat(const Mat* images, int nimages, const int* channels,
 				dims, histSize, ranges);
 }
 
+
+//Miscellaneous Image Transformations
+void cvtColor(InputArray* src, OutputArray* dst, int code){
+	cv::cvtColor(*static_cast<cv::_InputArray*>(src),
+			*static_cast<cv::_OutputArray*>(dst),
+			code);
+}
+
 } // extern "C"

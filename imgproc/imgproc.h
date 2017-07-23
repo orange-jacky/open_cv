@@ -18,9 +18,8 @@ void calcHistWithSparseMat(const Mat* images, int nimgages, const int* channels,
 			 const int * histSize, const float** ranges);
 
 
-
-
-
+//Miscellaneous Image Transformations
+void cvtColor(InputArray* src, OutputArray* dst, int code);
 
 
 

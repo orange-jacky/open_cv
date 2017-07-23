@@ -69,6 +69,9 @@ Scalar* MyScalar3(double v0, double v1, double v2);
 Mat* MyMat();
 Mat* MyMatWithMat(Mat* mat);
 Mat* MyMatRowsColsType(int rows, int cols, int type, const Scalar* s);
+Mat* MyMatZeros(int rows, int cols, int type);
+Mat* MyMatZerosWithSize(Size* size, int type);
+
 int Mat_flags(Mat* mat);
 int Mat_dims(Mat* mat);
 int Mat_rows(Mat* mat);
@@ -84,14 +87,16 @@ InputArray * MyInputArrayWithMat(Mat* mat);
 
 //OutputArray
 OutputArray * MyOutputArray();
+OutputArray * MyOutputArrayWithMat(Mat* mat);
 
 //SparseMat
 SparseMat* MySparseMat();
+SparseMat* MySparseMatWithMat(Mat* mat);
 
 
-//Utility and System Functions and Macros
-const char* GetBuildInformation();
-int GetNumberOfCPUs();
+//Operations on Arrays
+void minMaxLoc(const SparseMat* a, double* minVal, double* maxVal, int* minIdx, int* mdx);
+
 
 //Drawing functions
 void line(Mat* img, Point* p1, Point* p2, const Scalar* color);
@@ -99,6 +104,12 @@ void ellipse(Mat* img, Point* p1, Size* axes, double angle, double startAngle, d
 void circle(Mat* img, Point* center, int radius, const Scalar* color);	
 void rectangle(Mat* img, Point* p1, Point* p2, const Scalar* color);
 void rectangleWithRect(Mat* img, Rect* rect, const Scalar* color);
+
+//Utility and System Functions and Macros
+const char* GetBuildInformation();
+int GetNumberOfCPUs();
+
+
 
 #ifdef __cplusplus
 }

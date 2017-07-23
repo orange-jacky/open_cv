@@ -66,6 +66,13 @@ Mat* MyMatWithMat(Mat* mat){
 Mat* MyMatRowsColsType(int rows, int cols, int type, const Scalar* s){
 	return (cv::Mat*) new cv::Mat(rows, cols, type, *static_cast< const cv::Scalar*>(s));
 }
+Mat* MyMatZeros(int rows, int cols, int type){
+	return (cv::Mat*) new cv::Mat(cv::Mat::zeros(rows, cols, type));
+}
+Mat* MyMatZerosWithSize(Size* size, int type){
+	return (cv::Mat*) new cv::Mat(cv::Mat::zeros(*static_cast<cv::Size*>(size), type));
+}
+
 
 int Mat_flags(Mat* mat){
 	return static_cast<cv::Mat*>(mat)->flags;
@@ -101,21 +108,21 @@ InputArray * MyInputArrayWithMat(Mat* mat){
 OutputArray * MyOutputArray(){
 	return (cv::_InputArray*) new cv::_InputArray();
 }
+OutputArray * MyOutputArrayWithMat(Mat* mat){
+	return (cv::_OutputArray*) new cv::_OutputArray(*static_cast<cv::Mat*>(mat));
+}
 
 //SparseMat
 SparseMat* MySparseMat(){
 	return (cv::SparseMat*) new cv::SparseMat();
 }
-
-
-
-//Utility and System Functions and Macros
-const char* GetBuildInformation(){
-	std::string  str = cv::getBuildInformation();
-	return str.c_str();
+SparseMat* MySparseMatWithMat(Mat* mat){
+	return (cv::SparseMat*) new cv::SparseMat(*static_cast<cv::Mat*>(mat));
 }
-int GetNumberOfCPUs(){
-	return cv::getNumberOfCPUs();
+
+//Operations on Arrays
+void minMaxLoc(const SparseMat* a, double* minVal, double* maxVal, int* minIdx, int* maxIdx){
+	cv::minMaxLoc(*static_cast<const cv::SparseMat*>(a), NULL, NULL, NULL, NULL);
 }
 
 //Drawing functions
@@ -148,5 +155,19 @@ void rectangleWithRect(Mat* img, Rect* rect, const Scalar* color){
 		*static_cast<cv::Rect*>(rect),
 		*static_cast<const cv::Scalar*>(color));
 }
+
+
+
+//Utility and System Functions and Macros
+const char* GetBuildInformation(){
+	std::string  str = cv::getBuildInformation();
+	return str.c_str();
+}
+int GetNumberOfCPUs(){
+	return cv::getNumberOfCPUs();
+}
+
+
+
 
 } // extern "C"

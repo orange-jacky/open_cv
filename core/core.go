@@ -9,6 +9,7 @@ package core
 */
 import "C"
 import (
+	"fmt"
 	"runtime"
 	"unsafe"
 )
@@ -241,6 +242,9 @@ func (s *Scalar) Pointer() unsafe.Pointer {
 	return s.ptr
 }
 
+//MatND
+type MatND Mat
+
 //Mat
 type Mat struct {
 	ptr unsafe.Pointer
@@ -263,21 +267,26 @@ func NewMat() *Mat {
 	mat := C.MyMat()
 	return newMat(mat)
 }
-
 func NewMatWithMat(i unsafe.Pointer) *Mat {
 	mat := C.MyMatWithMat(i)
 	return newMat(mat)
 }
-
 func NewMatRowsColsType(rows, cols, typ int, s *Scalar) *Mat {
 	mat := C.MyMatRowsColsType(C.int(rows), C.int(cols), C.int(typ), s.ptr)
+	return newMat(mat)
+}
+func NewMatZeros(rows, cols, typ int) *Mat {
+	mat := C.MyMatZeros(C.int(rows), C.int(cols), C.int(typ))
+	return newMat(mat)
+}
+func NewMatZerosWithSize(size *Size, typ int) *Mat {
+	mat := C.MyMatZerosWithSize(size.Pointer(), C.int(typ))
 	return newMat(mat)
 }
 
 func (m *Mat) Flags() int {
 	return int(C.Mat_flags(m.ptr))
 }
-
 func (m *Mat) Dims() int {
 	return int(C.Mat_dims(m.ptr))
 }
@@ -308,6 +317,15 @@ func (m *Mat) ElemSize() int {
 
 func (m *Mat) Pointer() unsafe.Pointer {
 	return m.ptr
+}
+
+func (m *Mat) String() (s string) {
+	s += fmt.Sprintf("total:%v\n", m.Total())
+	s += fmt.Sprintf("elemsize:%v\n", m.ElemSize())
+	s += fmt.Sprintf("rows:%v\n", m.Rows())
+	s += fmt.Sprintf("cols:%v\n", m.Cols())
+	s += fmt.Sprintf("data:%v\n", len(m.Data()))
+	return s
 }
 
 //InputArray
@@ -364,6 +382,10 @@ func NewOutputArray() *OutputArray {
 	i := C.MyOutputArray()
 	return newOutputArray(i)
 }
+func NewOutputArrayWithMat(mat *Mat) *OutputArray {
+	i := C.MyOutputArrayWithMat(mat.Pointer())
+	return newOutputArray(i)
+}
 
 func (i *OutputArray) Pointer() unsafe.Pointer {
 	return i.ptr
@@ -390,17 +412,22 @@ func NewSparseMat() *SparseMat {
 	i := C.MyOutputArray()
 	return newSparseMat(i)
 }
+
+func NewSparseMatWithMat(mat *Mat) *SparseMat {
+	i := C.MySparseMatWithMat(mat.Pointer())
+	return newSparseMat(i)
+}
+
 func (s *SparseMat) Poniter() unsafe.Pointer {
 	return s.ptr
 }
 
-//Utility and System Functions and Macros
-func GetBuildInformation() string {
-	return C.GoString(C.GetBuildInformation())
-}
-
-func GetNumberOfCPUS() int {
-	return int(C.GetNumberOfCPUs())
+//Operations on Arrays
+func MinMaxLoc(sparseMat *SparseMat, minVal, maxVal *float64, minIdx, maxIdx *int) {
+	C.minMaxLoc(sparseMat.Poniter(),
+		(*C.double)(unsafe.Pointer(minVal)), (*C.double)(unsafe.Pointer(maxVal)),
+		(*C.int)(unsafe.Pointer(minIdx)),
+		(*C.int)(unsafe.Pointer(maxIdx)))
 }
 
 //Drawing functions
@@ -424,4 +451,13 @@ func Rectangle(img *Mat, p1, p2 *Point, color *Scalar) {
 
 func RectangleWithRect(img *Mat, rect *Rect, color *Scalar) {
 	C.rectangleWithRect(img.Pointer(), rect.Pointer(), color.Pointer())
+}
+
+//Utility and System Functions and Macros
+func GetBuildInformation() string {
+	return C.GoString(C.GetBuildInformation())
+}
+
+func GetNumberOfCPUS() int {
+	return int(C.GetNumberOfCPUs())
 }
