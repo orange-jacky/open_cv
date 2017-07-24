@@ -1,14 +1,13 @@
-package imgproc
+package opencv
 
 /*
 #cgo linux pkg-config: opencv
 #cgo darwin pkg-config: opencv
-#include "imgproc.h"
+#include "cpp/imgproc/imgproc.h"
 #include "stdlib.h"
 */
 import "C"
 import (
-	. "github.com/orange-jacky/open_cv/core"
 	//"runtime"
 	"unsafe"
 )

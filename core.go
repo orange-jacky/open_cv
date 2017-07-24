@@ -1,9 +1,9 @@
-package core
+package opencv
 
 /*
 #cgo linux pkg-config: opencv
 #cgo darwin pkg-config: opencv
-#include "core.h"
+#include "cpp/core/core.h"
 #include "stdlib.h"
 
 */

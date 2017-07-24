@@ -1,14 +1,13 @@
-package gui
+package opencv
 
 /*
 #cgo linux pkg-config: opencv
 #cgo darwin pkg-config: opencv
-#include "gui.h"
+#include "cpp/gui/gui.h"
 #include "stdlib.h"
 */
 import "C"
 import (
-	. "github.com/orange-jacky/open_cv/core"
 	//"runtime"
 	"unsafe"
 )

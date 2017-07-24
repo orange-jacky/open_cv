@@ -147,7 +147,7 @@ SparseMat* MySparseMatWithMat(Mat* mat){
 
 //Operations on Arrays
 void minMaxLoc(const SparseMat* a, double* minVal, double* maxVal, int* minIdx, int* maxIdx){
-	cv::minMaxLoc(*static_cast<const cv::SparseMat*>(a), NULL, NULL, NULL, NULL);
+	cv::minMaxLoc(*static_cast<const cv::SparseMat*>(a), NULL, maxVal, NULL, NULL);
 }
 
 //Drawing functions
