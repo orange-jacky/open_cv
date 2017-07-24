@@ -2,6 +2,31 @@
 
 extern "C" {
 
+// float** 和 [][]float32相互转化
+float** makeFloatArray(int size){
+	return  (float**)calloc(sizeof(float*), size);
+}
+void freeFloatArray(float **f, int size){
+	int i;
+	for(i=0; i<size; i++){
+		free(f[i]);
+	}
+	free(f);
+}
+void setFloatArray(float **f, float *a, int n){
+	f[n] = a;
+}
+
+float* makeFloat(int size){
+	return (float*)calloc(sizeof(float), size);
+}
+void freeFloat(float*f){
+	free(f);
+}
+void setFloat(float*f, float v, int n){
+	f[n] =  v;
+}
+
 
 //Point2f
 Point2f* MyPoint2f(float x, float y){

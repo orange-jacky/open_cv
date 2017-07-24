@@ -21,10 +21,15 @@ const (
 
 //Histograms
 func CalcHist(images *Mat, nimages int, channels []int, mask *InputArray, hist *OutputArray, dims int, histSize []int, ranges [][]float32) {
-	c_ranges := make([]*C.float, len(ranges))
-	c_ranges_ptr := (**C.float)(unsafe.Pointer(&c_ranges[0]))
+
+	c_ranges := C.makeFloatArray(C.int(len(ranges)))
+	defer C.freeFloatArray(c_ranges, C.int(len(ranges)))
 	for i, range_i := range ranges {
-		c_ranges[i] = (*C.float)(unsafe.Pointer(&range_i[0]))
+		array := C.makeFloat(C.int(len(range_i)))
+		for ii, val := range range_i {
+			C.setFloat(array, C.float(val), C.int(ii))
+		}
+		C.setFloatArray(c_ranges, array, C.int(i))
 	}
 
 	C.calcHist(images.Pointer(),
@@ -33,14 +38,18 @@ func CalcHist(images *Mat, nimages int, channels []int, mask *InputArray, hist *
 		mask.Pointer(), hist.Pointer(),
 		C.int(dims),
 		(*C.int)(unsafe.Pointer(&histSize[0])),
-		c_ranges_ptr)
+		c_ranges)
 }
 
 func CalcHistWithSparseMat(images *Mat, nimages int, channels []int, mask *InputArray, hist *SparseMat, dims int, histSize []int, ranges [][]float32) {
-	c_ranges := make([]*C.float, len(ranges))
-	c_ranges_ptr := (**C.float)(unsafe.Pointer(&c_ranges[0]))
-	for i, _ := range ranges {
-		c_ranges[i] = (*C.float)(&ranges[i][0])
+	c_ranges := C.makeFloatArray(C.int(len(ranges)))
+	defer C.freeFloatArray(c_ranges, C.int(len(ranges)))
+	for i, range_i := range ranges {
+		array := C.makeFloat(C.int(len(range_i)))
+		for ii, val := range range_i {
+			C.setFloat(array, C.float(val), C.int(ii))
+		}
+		C.setFloatArray(c_ranges, array, C.int(i))
 	}
 
 	C.calcHistWithSparseMat(images.Pointer(),
@@ -49,7 +58,7 @@ func CalcHistWithSparseMat(images *Mat, nimages int, channels []int, mask *Input
 		mask.Pointer(), hist.Poniter(),
 		C.int(dims),
 		(*C.int)(unsafe.Pointer(&histSize[0])),
-		c_ranges_ptr)
+		c_ranges)
 }
 
 //Miscellaneous Image Transformations

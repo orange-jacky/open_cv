@@ -7,6 +7,14 @@
 extern "C" {
 #endif
 
+// float** 和 [][]float32相互转化
+extern float** makeFloatArray(int size);
+extern void freeFloatArray(float **f, int size);
+extern void setFloatArray(float **f, float *a, int n);
+extern float* makeFloat(int size);
+void freeFloat(float*f);
+void setFloat(float*f, float v, int n);
+
 
 //basic datatype
 typedef void DataType;

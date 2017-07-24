@@ -4,9 +4,11 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include "../core/core.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 //Histograms
 void calcHist(const Mat* images, int nimgages, const int* channels,
