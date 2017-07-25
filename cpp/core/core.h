@@ -2,6 +2,7 @@
 #define __CORE_H__
 
 #include <opencv2/core/core.hpp>
+#include <cv.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -72,6 +73,7 @@ Scalar* MyScalar0();
 Scalar* MyScalar1(double v0);
 Scalar* MyScalar2(double v0, double v1);
 Scalar* MyScalar3(double v0, double v1, double v2);
+Scalar* MyScalarWithAll(double v);
 
 //Mat
 Mat* MyMat();
@@ -88,7 +90,6 @@ uchar* Mat_data(Mat* mat);
 size_t Mat_total(Mat* mat);
 size_t Mat_elemSize(Mat* mat);
 
-
 //InputArray
 InputArray * MyInputArray();
 InputArray * MyInputArrayWithMat(Mat* mat);
@@ -103,8 +104,10 @@ SparseMat* MySparseMatWithMat(Mat* mat);
 
 
 //Operations on Arrays
-void minMaxLoc(const SparseMat* a, double* minVal, double* maxVal, int* minIdx, int* mdx);
-
+void minMaxLocWithSparseMat(const SparseMat* a, double* minVal, double* maxVal);
+void minMaxLocWithInputArray(InputArray *src, double* minVal, double* maxVal);
+void normalize(InputArray *src, OutputArray *dst);
+void subtract(InputArray *src1, InputArray *src2, OutputArray *dst);
 
 //Drawing functions
 void line(Mat* img, Point* p1, Point* p2, const Scalar* color);
@@ -116,7 +119,6 @@ void rectangleWithRect(Mat* img, Rect* rect, const Scalar* color);
 //Utility and System Functions and Macros
 const char* GetBuildInformation();
 int GetNumberOfCPUs();
-
 
 
 #ifdef __cplusplus

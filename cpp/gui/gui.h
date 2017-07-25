@@ -16,10 +16,6 @@ int  waitkey(int delay);
 Mat* imread(const char* filename);
 
 
-
-
-
-
 #ifdef __cplusplus
 }
 #endif	

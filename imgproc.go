@@ -12,6 +12,10 @@ import (
 	"unsafe"
 )
 
+const (
+	CV_FILLED = C.CV_FILLED
+)
+
 /** Constants for color conversion */
 const (
 	CV_BGR2GRAY = C.CV_BGR2GRAY

@@ -27,7 +27,6 @@ void setFloat(float*f, float v, int n){
 	f[n] =  v;
 }
 
-
 //Point2f
 Point2f* MyPoint2f(float x, float y){
 	return (cv::Point2f*) new cv::Point2f(x, y);
@@ -79,6 +78,9 @@ Scalar* MyScalar2(double v0, double v1){
 }
 Scalar* MyScalar3(double v0, double v1, double v2){
 	return (cv::Scalar*) new cv::Scalar(v0, v1, v2);
+}
+Scalar* MyScalarWithAll(double v){
+	return (cv::Scalar*) new cv::Scalar(cv::Scalar::all(v));
 }
 
 //Mat
@@ -146,8 +148,19 @@ SparseMat* MySparseMatWithMat(Mat* mat){
 }
 
 //Operations on Arrays
-void minMaxLoc(const SparseMat* a, double* minVal, double* maxVal, int* minIdx, int* maxIdx){
-	cv::minMaxLoc(*static_cast<const cv::SparseMat*>(a), NULL, maxVal, NULL, NULL);
+void minMaxLocWithSparseMat(const SparseMat* a, double* minVal, double* maxVal){
+	cv::minMaxLoc(*static_cast<const cv::SparseMat*>(a), minVal, maxVal);
+}
+void minMaxLocWithInputArray(InputArray *src, double* minVal, double* maxVal){
+	cv::minMaxLoc(*static_cast<cv::_InputArray*>(src), minVal, maxVal);
+}
+void normalize(InputArray *src, OutputArray *dst){
+	cv::normalize(*static_cast<cv::_InputArray*>(src), *static_cast<cv::_OutputArray*>(dst));
+}
+void subtract(InputArray *src1, InputArray *src2, OutputArray *dst){
+		cv::subtract(*static_cast<cv::_InputArray*>(src1), 
+			*static_cast<cv::_InputArray*>(src2),
+			*static_cast<cv::_OutputArray*>(dst));
 }
 
 //Drawing functions
@@ -174,14 +187,11 @@ void rectangle(Mat* img, Point* p1, Point* p2, const Scalar* color){
 		*static_cast<cv::Point*>(p1), *static_cast<cv::Point*>(p2),
 		*static_cast<const cv::Scalar*>(color));
 }
-
 void rectangleWithRect(Mat* img, Rect* rect, const Scalar* color){
 	cv::rectangle(*static_cast<cv::Mat*>(img),
 		*static_cast<cv::Rect*>(rect),
 		*static_cast<const cv::Scalar*>(color));
 }
-
-
 
 //Utility and System Functions and Macros
 const char* GetBuildInformation(){
@@ -191,8 +201,5 @@ const char* GetBuildInformation(){
 int GetNumberOfCPUs(){
 	return cv::getNumberOfCPUs();
 }
-
-
-
 
 } // extern "C"

@@ -238,6 +238,11 @@ func NewScalar3(v0, v1, v2 float64) *Scalar {
 	return newScalar(s, v0, v1, v2)
 }
 
+func NewScalarWithAll(v float64) *Scalar {
+	s := C.MyScalarWithAll(C.double(v))
+	return newScalar(s)
+}
+
 func (s *Scalar) Pointer() unsafe.Pointer {
 	return s.ptr
 }
@@ -377,7 +382,6 @@ func deleteOutputArray(i *OutputArray) {
 		i.ptr = nil
 	}
 }
-
 func NewOutputArray() *OutputArray {
 	i := C.MyOutputArray()
 	return newOutputArray(i)
@@ -423,11 +427,22 @@ func (s *SparseMat) Poniter() unsafe.Pointer {
 }
 
 //Operations on Arrays
-func MinMaxLoc(sparseMat *SparseMat, minVal, maxVal *float64, minIdx, maxIdx *int) {
-	C.minMaxLoc(sparseMat.Poniter(),
-		(*C.double)(unsafe.Pointer(minVal)), (*C.double)(unsafe.Pointer(maxVal)),
-		(*C.int)(unsafe.Pointer(minIdx)),
-		(*C.int)(unsafe.Pointer(maxIdx)))
+func MinMaxLocWithInputArray(mat *Mat, minVal, maxVal *float64) {
+	var minv, maxv C.double
+	inputarray := NewInputArrayWithMat(mat)
+	C.minMaxLocWithInputArray(inputarray.Pointer(), &minv, &maxv)
+	if minVal != nil {
+		*minVal = float64(minv)
+	}
+	if maxVal != nil {
+		*maxVal = float64(maxv)
+	}
+}
+func Normalize(src *InputArray, dst *OutputArray) {
+	C.normalize(src.Pointer(), dst.Pointer())
+}
+func Subtract(src1, src2 *InputArray, dst *OutputArray) {
+	C.subtract(src1.Pointer(), src2.Pointer(), dst.Pointer())
 }
 
 //Drawing functions
@@ -460,4 +475,8 @@ func GetBuildInformation() string {
 
 func GetNumberOfCPUS() int {
 	return int(C.GetNumberOfCPUs())
+}
+
+func CvRound(value float64) int {
+	return int(C.cvRound(C.double(value)))
 }
